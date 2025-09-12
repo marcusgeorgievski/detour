@@ -1,39 +1,22 @@
 "use client";
 
-import { addToWaitlist } from "@/lib/waitlist";
-import { useEffect, useState } from "react";
+import { addToWaitlist } from "@/actions/waitlist";
+import { getLastTouchUTMs } from "@/lib/utm";
+import { useState } from "react";
 
 export default function WaitlistForm() {
   const [email, setEmail] = useState("");
-  const [utmParams, setUtmParams] = useState<{
-    source?: string;
-    medium?: string;
-    campaign?: string;
-  }>({});
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
-
-  useEffect(() => {
-    const url = new URL(window.location.href);
-    setUtmParams({
-      source: url.searchParams.get("utm_source") || undefined,
-      medium: url.searchParams.get("utm_medium") || undefined,
-      campaign: url.searchParams.get("utm_campaign") || undefined,
-    });
-  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatus("loading");
 
     try {
-      await addToWaitlist({
-        email,
-        userAgent: navigator.userAgent,
-        referrer: document.referrer || null,
-        utms: utmParams,
-      });
+      const utms = getLastTouchUTMs();
+      await addToWaitlist({ email, utms });
 
       setStatus("success");
       setEmail("");

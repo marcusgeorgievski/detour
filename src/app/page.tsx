@@ -1,10 +1,17 @@
 "use client";
 
+import { logPageVisit } from "@/actions/page-visit";
 import Logo from "@/components/logo";
 import WaitlistForm from "@/components/waitlist-form";
-// import Link from "next/link";
+import { getLastTouchUTMs } from "@/lib/utm";
+import { useEffect } from "react";
 
 export default function Home() {
+  useEffect(() => {
+    const utms = getLastTouchUTMs();
+    logPageVisit({ path: window.location.pathname, utms });
+  }, []);
+
   return (
     <div className="flex flex-col justify-center items-center gap-25 px-6 sm:px-2 mt-25">
       <Hero />
