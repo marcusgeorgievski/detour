@@ -33,7 +33,7 @@ function Hero() {
       <div className="flex flex-col text-center gap-4 ">
         <p className="leading-6">Turn hometown commutes into profit 💸</p>
         <p className="leading-6">
-          Fine cheap, simple deliveries to and from{" "}
+          Find cheap, simple deliveries to and from{" "}
           <span className="whitespace-nowrap">home 📦</span>
         </p>
       </div>
